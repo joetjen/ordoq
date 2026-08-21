@@ -55,7 +55,15 @@ defmodule Ordoq.MixProject do
       main: "readme",
       source_url: @source_url,
       homepage_url: "https://joetjen.github.io/ordoq",
-      extras: ["README.md", "CHANGELOG.md", "LICENSE"],
+      extras: [
+        "README.md",
+        "guides/usage.md",
+        "guides/examples.md",
+        "guides/architecture.md",
+        "CHANGELOG.md",
+        "LICENSE"
+      ],
+      groups_for_extras: [Guides: ~r|^guides/|],
       groups_for_modules: [
         Core: [Ordoq, Ordoq.Queue],
         Support: [Ordoq.Application, Ordoq.Error, Ordoq.Telemetry]
@@ -71,7 +79,7 @@ defmodule Ordoq.MixProject do
         "GitHub" => @source_url,
         "Docs" => "https://joetjen.github.io/ordoq"
       },
-      files: ~w(lib .formatter.exs mix.exs README.md CHANGELOG.md LICENSE)
+      files: ~w(lib guides .formatter.exs mix.exs README.md CHANGELOG.md LICENSE)
     ]
   end
 
