@@ -35,6 +35,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   same `:code`, `:message` and `:details` fields and the same per-code
   constructors, so matching on `%Ordoq.Error{code: :overloaded}` is unchanged.
 
+### Fixed
+
+- Dialyzer passes again. Four specs named `Ordoq.Telemetry.Context.t/0`, which
+  did not exist; it is now defined, and both callbacks use it. `:logger` is
+  declared in `extra_applications`, since Ordoq logs through `Logger`, which
+  also makes the release declare the dependency it relies on.
+
+- A configured gate that is not a module now fails loudly instead of being
+  reported as an unavailable dependency. The `is_atom/1` check in front of it
+  could never fail for the declared type, and silently treating a
+  misconfiguration as an outage hid the mistake.
+
 ## [Unreleased]
 
 ### Changed

@@ -25,7 +25,7 @@ defmodule Ordoq.MixProject do
   end
 
   @spec application() :: keyword()
-  def application, do: [mod: {Ordoq.Application, []}]
+  def application, do: [extra_applications: [:logger], mod: {Ordoq.Application, []}]
 
   @spec cli() :: keyword()
   def cli do
