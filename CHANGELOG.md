@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-10-01
+
+### Fixed
+
+- The README links the usage and examples guides at their `guides/` paths;
+  they pointed at `USAGE_GUIDE.md` and `EXAMPLES.md`, which no longer exist.
+- `mix hex.publish` runs in the `docs` environment, where `ex_doc` is
+  available, instead of failing because the `docs` task is missing in `dev`.
+- The README names `Ordoq.Telemetry` and all seven events instead of
+  `Ordoq.Telemetry.events/0`, which no longer exists, and three of them.
+
 ## [0.1.0] - 2026-10-01
 
 The first public release. Ordoq was extracted from a private workspace, where
@@ -61,7 +72,7 @@ relative to the last of them.
   queue process's empty one.
 - A configured gate that is not a module fails loudly instead of being reported
   as an unavailable dependency.
-- Dialyzer passes: `Ordoq.Telemetry.Context.t/0` is defined, and `:logger` is
+- Dialyzer passes: `t:Ordoq.Telemetry.Context.t/0` is defined, and `:logger` is
   declared in `extra_applications`.
 
 ## Before the public release
