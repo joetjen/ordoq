@@ -71,8 +71,8 @@ Passing `nil` to the touch function restarts the callback's configured
 time-to-run. A positive millisecond value requests a different duration within
 the configured maximum.
 
-See [Usage](USAGE_GUIDE.md) for configuration and lifecycle details and
-[Examples](EXAMPLES.md) for focused patterns.
+See [Usage](guides/usage.md) for configuration and lifecycle details and
+[Examples](guides/examples.md) for focused patterns.
 
 ## Name origin
 
@@ -82,12 +82,16 @@ durable or distributed job system.
 
 ## Telemetry
 
-`Ordoq.Telemetry.events/0` publishes canonical declarations under
-`[:ordoq, ...]`:
+Every event is emitted through `:telemetry` under `[:ordoq, ...]`;
+`Ordoq.Telemetry` documents their measurements and metadata:
 
 - `[:ordoq, :job, :enqueue]`
 - `[:ordoq, :job, :execute, :start | :stop | :exception]`
 - `[:ordoq, :job, :retry]`
+- `[:ordoq, :job, :terminal]`
+- `[:ordoq, :job, :control]`
+- `[:ordoq, :queue, :depth]`
+- `[:ordoq, :queue, :in_flight]`
 - `[:ordoq, :job, :terminal]`
 - `[:ordoq, :job, :control]`
 - `[:ordoq, :queue, :depth]`

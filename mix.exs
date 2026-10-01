@@ -2,7 +2,7 @@ defmodule Ordoq.MixProject do
   @moduledoc false
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.1.1"
   @source_url "https://github.com/joetjen/ordoq"
 
   @spec project() :: keyword()
@@ -34,6 +34,7 @@ defmodule Ordoq.MixProject do
         credo: :dev,
         dialyzer: :dev,
         docs: :docs,
+        "hex.publish": :docs,
         precommit: :dev,
         test: :test
       ]
@@ -64,6 +65,9 @@ defmodule Ordoq.MixProject do
         "LICENSE"
       ],
       groups_for_extras: [Guides: ~r|^guides/|],
+      # The changelog's history names functions that no longer exist, and the
+      # architecture guide names internal modules on purpose.
+      skip_undefined_reference_warnings_on: ["CHANGELOG.md", "guides/architecture.md"],
       groups_for_modules: [
         Core: [Ordoq, Ordoq.Queue],
         Support: [Ordoq.Application, Ordoq.Error, Ordoq.Telemetry]
