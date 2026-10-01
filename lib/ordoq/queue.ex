@@ -401,7 +401,7 @@ defmodule Ordoq.Queue do
   defp subscribe_gate(gate) do
     module = Ordoq.Gate.implementation()
 
-    if is_atom(module) and module != nil and Code.ensure_loaded?(module) and
+    if module != nil and Code.ensure_loaded?(module) and
          function_exported?(module, :subscribe, 1) do
       case module.subscribe(gate) do
         {:ok, :open} -> {:ok, true}
@@ -419,7 +419,7 @@ defmodule Ordoq.Queue do
 
   defp unsubscribe_gate(gate) do
     module = Ordoq.Gate.implementation()
-    if is_atom(module) and module != nil and Code.ensure_loaded?(module), do: module.unsubscribe(gate)
+    if module != nil and Code.ensure_loaded?(module), do: module.unsubscribe(gate)
     :ok
   end
 

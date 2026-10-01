@@ -2,7 +2,7 @@ defmodule Ordoq.MixProject do
   @moduledoc false
   use Mix.Project
 
-  @version "1.0.1"
+  @version "0.1.0"
   @source_url "https://github.com/joetjen/ordoq"
 
   @spec project() :: keyword()
@@ -25,7 +25,7 @@ defmodule Ordoq.MixProject do
   end
 
   @spec application() :: keyword()
-  def application, do: [mod: {Ordoq.Application, []}]
+  def application, do: [extra_applications: [:logger], mod: {Ordoq.Application, []}]
 
   @spec cli() :: keyword()
   def cli do
@@ -55,7 +55,15 @@ defmodule Ordoq.MixProject do
       main: "readme",
       source_url: @source_url,
       homepage_url: "https://joetjen.github.io/ordoq",
-      extras: ["README.md", "CHANGELOG.md", "LICENSE"],
+      extras: [
+        "README.md",
+        "guides/usage.md",
+        "guides/examples.md",
+        "guides/architecture.md",
+        "CHANGELOG.md",
+        "LICENSE"
+      ],
+      groups_for_extras: [Guides: ~r|^guides/|],
       groups_for_modules: [
         Core: [Ordoq, Ordoq.Queue],
         Support: [Ordoq.Application, Ordoq.Error, Ordoq.Telemetry]
@@ -71,7 +79,7 @@ defmodule Ordoq.MixProject do
         "GitHub" => @source_url,
         "Docs" => "https://joetjen.github.io/ordoq"
       },
-      files: ~w(lib .formatter.exs mix.exs README.md CHANGELOG.md LICENSE)
+      files: ~w(lib guides .formatter.exs mix.exs README.md CHANGELOG.md LICENSE)
     ]
   end
 
