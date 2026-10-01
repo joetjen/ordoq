@@ -11,9 +11,17 @@ defmodule Ordoq.Telemetry.Context do
   `Ordoq.Telemetry.LoggerContext` for the default.
   """
 
+  @typedoc """
+  A captured process context.
+
+  Its shape belongs to the implementation that captured it; Ordoq only carries
+  it from `c:capture/0` to `c:with/2`.
+  """
+  @type t :: term()
+
   @doc "Captures the calling process's context."
-  @callback capture() :: term()
+  @callback capture() :: t()
 
   @doc "Runs `function` with a captured context applied, restoring what was there."
-  @callback with(context :: term(), function :: (-> result)) :: result when result: var
+  @callback with(context :: t(), function :: (-> result)) :: result when result: var
 end
