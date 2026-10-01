@@ -43,7 +43,7 @@ instance replacement or cross service boundaries.
 ```elixir
 def deps do
   [
-    {:ordoq, "~> 2.0"}
+    {:ordoq, "~> 0.1"}
   ]
 end
 ```

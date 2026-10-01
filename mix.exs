@@ -2,7 +2,7 @@ defmodule Ordoq.MixProject do
   @moduledoc false
   use Mix.Project
 
-  @version "1.0.1"
+  @version "0.1.0"
   @source_url "https://github.com/joetjen/ordoq"
 
   @spec project() :: keyword()
