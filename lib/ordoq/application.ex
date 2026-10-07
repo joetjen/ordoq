@@ -26,12 +26,18 @@ defmodule Ordoq.Application do
 
   # Internal helpers
 
-  # Defines bounded worker ownership before the queue that dispatches into it.
+  # Defines worker ownership before the queue that dispatches into it.
+  #
+  # The queue alone bounds concurrency (`max_in_flight`). The task supervisor
+  # carries no `max_children` of its own: a worker sends its result before its
+  # process exits, and the queue starts the next job on that result, so for a
+  # moment the supervisor holds one more child than the queue runs. A cap equal
+  # to `max_in_flight` turned that moment into a crash of the queue.
   @spec children(Config.t()) :: [Supervisor.child_spec()]
   defp children(config) do
     task_supervisor =
       Supervisor.child_spec(
-        {Task.Supervisor, name: Ordoq.TaskSupervisor, max_children: Config.max_in_flight(config)},
+        {Task.Supervisor, name: Ordoq.TaskSupervisor},
         id: Ordoq.TaskSupervisor
       )
 
