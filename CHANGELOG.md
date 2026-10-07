@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- The queue no longer crashes with "reached the maximum number of tasks for
+  this task supervisor" under sustained load. A worker sends its result before
+  its process exits, and the queue starts the next job on that result, so the
+  task supervisor briefly held one child more than `max_in_flight`, its
+  `max_children`. The supervisor has no cap of its own any more; the queue
+  alone bounds concurrency, as before.
+
 ## [0.1.1] - 2026-10-01
 
 ### Fixed

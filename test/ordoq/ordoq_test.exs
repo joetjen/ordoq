@@ -203,6 +203,33 @@ defmodule OrdoqTest do
       send(second_worker, :continue)
     end
 
+    test "a worker that reported but has not exited yet does not block the next job" do
+      # A task sends its result before its process exits, so for a moment the
+      # task supervisor still holds a worker the queue has already released.
+      # A stand-in child plays that worker for as long as the test needs.
+      restart_ordoq(max_in_flight: 1)
+      parent = self()
+
+      {:ok, lingering} =
+        Task.Supervisor.start_child(Ordoq.TaskSupervisor, fn ->
+          send(parent, :lingering)
+
+          receive do
+            :exit -> :ok
+          end
+        end)
+
+      assert_receive :lingering
+      queue = Process.whereis(Ordoq.Queue)
+
+      assert {:ok, _id} = Ordoq.enqueue(Support, :notify, [self(), :dispatched])
+      assert_receive :dispatched
+      assert Process.whereis(Ordoq.Queue) == queue
+      assert :ok = Ordoq.await_idle(200)
+
+      send(lingering, :exit)
+    end
+
     test "a closed health gate rejects admission and pauses queued dispatch" do
       _ignored = Application.stop(:ordoq)
       start_supervised!({GateState, :open})

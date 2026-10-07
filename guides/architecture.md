@@ -37,9 +37,14 @@ subscribes to one configured gate.
 
 ```text
 Ordoq.Supervisor (:rest_for_one)
-├── Ordoq.TaskSupervisor (Task.Supervisor, max_children: max_in_flight)
+├── Ordoq.TaskSupervisor (Task.Supervisor, no max_children)
 └── Ordoq.Queue (GenServer, shutdown: shutdown_timeout_ms)
 ```
+
+The queue alone bounds concurrency with `max_in_flight`. The task supervisor
+has no `max_children`: a worker sends its result before its process exits, and
+the queue starts the next job on that result, so the supervisor briefly holds
+one more child than the queue runs.
 
 The child order matters. If the task supervisor fails, `:rest_for_one` also
 restarts the queue so it cannot retain task references owned by a replaced
@@ -60,7 +65,7 @@ The callback and its startup/shutdown helpers have this source-derived flow:
 | Entry point or callback | Visibility | Direct call flow |
 | --- | --- | --- |
 | **start/2** | `def` | calls **Config.load/0** → **Supervisor.start_link/2** → **children/1** → **supervisor_options/0**; references **Config**, **Supervisor** |
-| **children/1** | `defp` | calls **Supervisor.child_spec/2** → **Config.max_in_flight/1** → **Config.shutdown_timeout_ms/1**; references **Supervisor**, **Task.Supervisor**, **Ordoq.TaskSupervisor**, **Config**, **Queue** |
+| **children/1** | `defp` | calls **Supervisor.child_spec/2** → **Config.shutdown_timeout_ms/1**; references **Supervisor**, **Task.Supervisor**, **Ordoq.TaskSupervisor**, **Config**, **Queue** |
 | **supervisor_options/0** | `defp` | performs no further named function call in its body; references **Ordoq.Supervisor** |
 
 The project-owned runtime process set is **Ordoq.Queue**. Exact child order and option-dependent children are defined by the `start/2` and supervisor `init/1` flows below; dependency-owned processes remain documented by their owning libraries.
