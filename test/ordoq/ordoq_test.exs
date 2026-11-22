@@ -112,7 +112,6 @@ defmodule OrdoqTest do
   alias OrdoqTest.{GateState, Support}
 
   @trace_id "4bf92f3577b34da6a3ce929d0e0e4736"
-  @traceparent "00-#{@trace_id}-00f067aa0ba902b7-01"
 
   doctest Ordoq
 
